@@ -17,3 +17,7 @@
 `$ export FLASK_ENV=development`
 
 `$ flask run`
+
+Press ctrl + C to exit development
+
+If you want to build the server again, restart from `$ export FLASK_APP=app`
