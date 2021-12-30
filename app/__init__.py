@@ -24,10 +24,18 @@ def create_app(test_config=None):
   except OSError:
     pass
 
-  # a simple page that says hello
+  # トップページ
   @app.route('/')
   def index():
+    # TODO ユーザーに対して、登録しているグループの情報を取得する処理を記述する
     test = 'テンプレートエンジンのテスト'
     return render_template('index.html', test=test)
+
+  # 個別のグループページ
+  @app.route('/groups/<group_id>') # /groups/<group_id>にアクセスしたとき
+  def group(group_id):
+    # TODO 個別のグループの情報を取得する処理を記述する
+    return render_template('group.html', group_id=group_id) # group.htmlに変数group_idを渡す
+
 
   return app
