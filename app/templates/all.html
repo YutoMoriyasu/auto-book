@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+    
+  <header class="py-3">
+    <div class="container">
+      <h1>All 記事一覧</h1>
+    </div>
+  </header>
+  <main>
+    <div onclick="obj=document.getElementById('open').style; obj.display=(obj.display=='none')?'block':'none';">
+      <a style="cursor:pointer;">▼ タイトル①：システム創成学科</a>
+    </div>
+    <div id="open" style="display:none;clear:both;">
+      <iframe src="https://www.si.t.u-tokyo.ac.jp/" width="600" height="400"></iframe>
+    </div>
+
+    <div onclick="obj=document.getElementById('open2').style; obj.display=(obj.display=='none')?'block':'none';">
+      <a style="cursor:pointer;">▼ タイトル②：技術経営戦略学専攻</a>
+    </div>
+    <div id="open2" style="display:none;clear:both;">
+      <iframe src="https://tmi.t.u-tokyo.ac.jp/" width="600" height="400"></iframe>
+    </div>
+
+    <div onclick="obj=document.getElementById('open3').style; obj.display=(obj.display=='none')?'block':'none';">
+      <a style="cursor:pointer;">▼ タイトル③：新領域創成科学研究科攻</a>
+    </div>
+    <div id="open3" style="display:none;clear:both;">
+      <iframe src="https://www.k.u-tokyo.ac.jp/" width="600" height="400"></iframe>
+    </div>
+
+
+    <div class="container py-5">
+      <h2>記事グループ一覧</h2>
+      <p>テンプレートに値を渡してみる: {{ all }}</p>
+    </div>
+    <div class="container py-5">
+      <h3>タイトル①：システム創成学科</h3>
+      <iframe src="https://www.si.t.u-tokyo.ac.jp/" width="600" height="400"></iframe> 
+    </div>
+    <div class="container py-5">
+      <h3>タイトル②：技術経営戦略学専攻</h3>
+      <iframe src="https://tmi.t.u-tokyo.ac.jp/" width="600" height="400"></iframe> 
+    </div>
+    <div class="container py-5">
+      <h3>タイトル③：新領域創成科学研究科</h3>
+      <iframe src="https://www.k.u-tokyo.ac.jp/" width="600" height="400"></iframe> 
+    </div>
+
+  
+
+  </main>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>
