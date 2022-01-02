@@ -2,7 +2,6 @@ import os
 
 from flask import Flask, render_template
 
-
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__, instance_relative_config=True)
@@ -37,5 +36,8 @@ def create_app(test_config=None):
     # TODO 個別のグループの情報を取得する処理を記述する
     return render_template('group.html', group_id=group_id) # group.htmlに変数group_idを渡す
 
-
+  # ログイン画面
+  @app.route('/login'):
+  def login():
+    return render_template('login.html')
   return app
