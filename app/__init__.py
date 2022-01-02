@@ -37,5 +37,7 @@ def create_app(test_config=None):
     return render_template('group.html', group_id=group_id) # group.htmlに変数group_idを渡す
 
   # ログイン画面
-  
+  @app.route('/login'):
+  def login():
+    return render_template('login.html')
   return app
