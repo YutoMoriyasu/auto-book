@@ -52,5 +52,10 @@ def create_app(test_config=None):
     else:
         return render_template('signup.html')
 
+  # ログイン画面
+  @app.route('/login')
+  def login():
+    return render_template('login.html')
+
 
   return app
