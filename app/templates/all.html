@@ -7,6 +7,7 @@
   <title>Document</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
+
 <body>
     
   <header class="py-3">
@@ -14,26 +15,28 @@
       <h1>All 記事一覧</h1>
     </div>
   </header>
+
   <main>
-    <div onclick="obj=document.getElementById('open').style; obj.display=(obj.display=='none')?'block':'none';">
-      <a style="cursor:pointer;">▼ タイトル①：システム創成学科</a>
+    <hr>
+    <div onclick="obj=document.getElementById('open1').style; obj.display=(obj.display=='none')?'block':'none';">
+      <h3 class="container py-1" style="background-color:#ff9933"><a style="cursor:pointer;">▼ タイトル①：システム創成学科</a></h3>
     </div>
-    <div id="open" style="display:none;clear:both;">
-      <iframe src="https://www.si.t.u-tokyo.ac.jp/" width="600" height="400"></iframe>
+    <div id="open1" style="display:none;clear:both;" class="container py-0">
+      <iframe src="https://www.si.t.u-tokyo.ac.jp/" width="900" height="600"></iframe>
     </div>
 
     <div onclick="obj=document.getElementById('open2').style; obj.display=(obj.display=='none')?'block':'none';">
-      <a style="cursor:pointer;">▼ タイトル②：技術経営戦略学専攻</a>
+      <h3 class="container py-1" style="background-color:#ff9933"><a style="cursor:pointer;">▼ タイトル②：技術経営戦略学専攻</a></h3>
     </div>
-    <div id="open2" style="display:none;clear:both;">
-      <iframe src="https://tmi.t.u-tokyo.ac.jp/" width="600" height="400"></iframe>
+    <div id="open2" style="display:none;clear:both;" class="container py-0">
+      <iframe src="https://tmi.t.u-tokyo.ac.jp/" width="900" height="600"></iframe>
     </div>
 
     <div onclick="obj=document.getElementById('open3').style; obj.display=(obj.display=='none')?'block':'none';">
-      <a style="cursor:pointer;">▼ タイトル③：新領域創成科学研究科攻</a>
+      <h3 class="container py-1" style="background-color:#ff9933"><a style="cursor:pointer;">▼ タイトル③：新領域創成科学研究科攻</a></h3>
     </div>
-    <div id="open3" style="display:none;clear:both;">
-      <iframe src="https://www.k.u-tokyo.ac.jp/" width="600" height="400"></iframe>
+    <div id="open3" style="display:none;clear:both;" class="container py-0">
+      <iframe src="https://www.k.u-tokyo.ac.jp/" width="900" height="600"></iframe>
     </div>
 
 

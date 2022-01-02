@@ -1,7 +1,8 @@
 import os
 
-from flask import Flask, render_template
-
+from flask import Flask, render_template, request, redirect
+from flask_login import UserMixin, LoginManager
+from werkzeug.security import generate_password_hash
 
 def create_app(test_config=None):
   # create and configure the app
@@ -36,6 +37,25 @@ def create_app(test_config=None):
   def group(group_id):
     # TODO 個別のグループの情報を取得する処理を記述する
     return render_template('group.html', group_id=group_id) # group.htmlに変数group_idを渡す
+  
+  # サインアップページ
+  @app.route('/signup', methods=['GET','POST'])
+  def signup():
+    if request.method == 'POST':
+      username = request.form.get('username')
+      passward = request.form.get('passward')
+      # Userのインスタンスを作成
+      user = User(username=username, password=generate_password_hash(password, method='sha256'))
+      db.session.add(user)
+      db.session.commit()
+      return redirect('/login')
+    else:
+        return render_template('signup.html')
+
+  # ログイン画面
+  @app.route('/login')
+  def login():
+    return render_template('login.html')
 
   @app.route('/all')
   def all():
