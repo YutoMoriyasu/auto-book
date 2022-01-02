@@ -36,6 +36,11 @@ def create_app(test_config=None):
   def group(group_id):
     # TODO 個別のグループの情報を取得する処理を記述する
     return render_template('group.html', group_id=group_id) # group.htmlに変数group_idを渡す
+  
+  # サインアップページ
+  @app.route('/signup')
+  def signup():
+    return render_template('signup.html', signup='signup')
 
 
   return app
