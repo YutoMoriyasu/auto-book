@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, render_template, request, redirect
-from flask_login import UserMixin, LoginManager, login_user, logout_user login_required
+from flask_login import UserMixin, LoginManager, login_user, logout_user ,login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 
 def create_app(test_config=None):
