@@ -10,6 +10,7 @@ from sqlalchemy.orm import sessionmaker
 engine = create_engine('sqlite:///user.db')  # user.db というデータベースを使うという宣言です
 Base = declarative_base()  # データベースのテーブルの親です
 
+# usersテーブル定義
 class User(Base):  # PythonではUserというクラスのインスタンスとしてデータを扱います
   __tablename__ = 'users'  # テーブル名は users です
   user_id = Column(Integer, primary_key=True, unique=True)  # 整数型のid をprimary_key として、被らないようにします
@@ -17,6 +18,11 @@ class User(Base):  # PythonではUserというクラスのインスタンスと�
   name = Column(String)  # 文字列の nameというデータを使います
   def __repr__(self):
       return "User<{}, {}, {}>".format(self.user_id, self.email, self.name)
+
+# postsテーブル定義
+
+# groupsテーブル定義
+
 
 Base.metadata.create_all(engine)  # 実際にデータベースを構築します
 SessionMaker = sessionmaker(bind=engine)  # Pythonとデータベースの経路です
