@@ -3,23 +3,35 @@ import os
 from flask import Flask, render_template, request, redirect
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import *
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+engine = create_engine('sqlite:///user.db')  # user.db というデータベースを使うという宣言です
+Base = declarative_base()  # データベースのテーブルの親です
+
+class User(Base):  # PythonではUserというクラスのインスタンスとしてデータを扱います
+  __tablename__ = 'users'  # テーブル名は users です
+  user_id = Column(Integer, primary_key=True, unique=True)  # 整数型のid をprimary_key として、被らないようにします
+  email = Column(String)  # 文字列の emailというデータを作ります
+  name = Column(String)  # 文字列の nameというデータを使います
+  def __repr__(self):
+      return "User<{}, {}, {}>".format(self.user_id, self.email, self.name)
+
+Base.metadata.create_all(engine)  # 実際にデータベースを構築します
+SessionMaker = sessionmaker(bind=engine)  # Pythonとデータベースの経路です
+session = SessionMaker()  # 経路を実際に作成しました
 
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__, instance_relative_config=True)
   app.config.from_mapping(
     SECRET_KEY='dev',
-    DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
   )
 
   login_manager = LoginManager()
   login_manager.init_app(app)
 
-  class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), nullable=False, unique=True)
-    password = db.Column(db.String(12), nullable=False)
-    
   @login_manager.user_loader
   def load_user(user_id):
     return User.query.get(int(user_id))
@@ -57,11 +69,11 @@ def create_app(test_config=None):
   def signup():
     if request.method == 'POST':
       username = request.form.get('username')
-      passward = request.form.get('passward')
+      email = request.form.get('email')
       # Userのインスタンスを作成
-      user = User(username=username, password=generate_password_hash(password, method='sha256'))
-      db.session.add(user)
-      db.session.commit()
+      user = User(name = username, email = email)
+      session.add(user)
+      session.commit()
       return redirect('/login')
     else:
       return render_template('signup.html')
@@ -71,11 +83,11 @@ def create_app(test_config=None):
   def login():
     if request.method == 'POST':
       username = request.form.get('username')
-      passward = request.form.get('passward')      
-      user = User.query.filter_by(username=username).first()
-      if check_password_hash(user.password, password):
-        login_user(user)
-        return redirect('/')
+      email = request.form.get('email') 
+      user = session.query(User).filter(User.name == username).all()
+      for user in user:
+        if user.email == email:
+          return render_template('index.html')
     else:
       return render_template('login.html')
   
