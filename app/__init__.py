@@ -12,6 +12,18 @@ def create_app(test_config=None):
     DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
   )
 
+  login_manager = LoginManager()
+  login_manager.init_app(app)
+
+  class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), nullable=False, unique=True)
+    password = db.Column(db.String(12), nullable=False)
+    
+  @login_manager.user_loader
+  def load_user(user_id):
+    return User.query.get(int(user_id))
+  
   if test_config is None:
     # load the instance config, if it exists, when not testing
     app.config.from_pyfile('config.py', silent=True)
@@ -55,11 +67,11 @@ def create_app(test_config=None):
       return render_template('signup.html')
 
   # ログイン画面
-  @app.route('/login')
+  @app.route('/login', methods=['GET','POST'])
   def login():
-    if request.method == "POST":
+    if request.method == 'POST':
       username = request.form.get('username')
-      password = request.form.get('password')
+      passward = request.form.get('passward')      
       user = User.query.filter_by(username=username).first()
       if check_password_hash(user.password, password):
         login_user(user)
