@@ -31,20 +31,20 @@ h1 {
   font-weight: bold;
 }
 
-.auth-form {
+.base-form {
   min-width: 400px;
   padding: 20px;
   background-color: #efefef;
   border-radius: 6px;
 }
 
-.auth-form input {
+.base-form input {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
 }
 
-.auth-form button {
+.base-form button {
   font-size: 16px;
   font-weight: bold;
   color: #fff;
@@ -54,26 +54,32 @@ h1 {
   border-radius: 6px;
 }
 
-.auth-form .notification {
+.base-form .notification {
   padding: 8px;
   background-color: #fc4067;
   margin-bottom: 15px;
   border-radius: 6px;
 }
 
-.auth-form .notification p,
-.auth-form .notification a,
-.auth-form .notification a:hover {
+.base-form .notification p,
+.base-form .notification a,
+.base-form .notification a:hover {
   color: #fff;
   margin-bottom: 0;
 }
 
-.auth-form .notification a {
+.base-form .notification a {
   text-decoration: underline;
 }
 
-.auth-form .notification a:hover {
+.base-form .notification a:hover {
   opacity: 0.8;
+}
+
+.base-form select {
+  padding: 12px 9px;
+  margin-bottom: 15px;
+  cursor: pointer;
 }
 
 .posts-side-form select {
