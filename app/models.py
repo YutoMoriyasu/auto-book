@@ -23,3 +23,9 @@ class Group(db.model):
   __tablename__ = 'group'
   id = db.Column(UUIDType(binary=False), primary_key=True, default=str(uuid.uuid4()))
   name = db.Column(db.String(1000))
+
+class GroupPost(db.model):
+  __tablename__ = 'group_post'
+  id = db.Column(db.Integer, primary_key=True)
+  group_id = db.Column(UUIDType(binary=False))
+  post_id = db.Column(db.Integer)
