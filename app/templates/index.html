@@ -8,6 +8,14 @@
     <a href="{{ url_for('main.group', group_id = group.id) }}">
       {{ group.name }}
     </a>
+    <ul>
+      {% for post in data[group.id] %}
+      <li>
+        <p>{{ post.title }}</p>
+        <p>{{ post.url }}</p>
+      </li>
+      {% endfor %}
+    </ul>
   </li>
   {% endfor %}
 </ul>

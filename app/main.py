@@ -16,15 +16,27 @@ main = Blueprint('main', __name__)
 def index():
   # TODO ユーザーに対して、登録しているグループの情報を取得する処理を記述する
   individual_groups = Group.query.filter_by(user_id = current_user.id)
-  return render_template('index.html', groups=individual_groups)
+
+  data = {}
+  for individual_group in individual_groups:
+    data[individual_group.id] = []
+    relations = GroupPost.query.filter_by(group_id = individual_group.id)
+    for relation in relations:
+      post = Post.query.filter_by(id = relation.post_id).first()
+      data[individual_group.id].append(post)
+  return render_template('index.html', groups=individual_groups, data = data)
 
 # 個別のグループページ
 @main.route('/groups/<group_id>') # /groups/<group_id>にアクセスしたとき
 @login_required
 def group(group_id):
   # TODO 個別のグループの情報を取得する処理を記述する
-  return render_template('group.html', group_id=group_id) # group.htmlに変数group_idを渡す
-
+  relations = GroupPost.query.filter_by(group_id = group_id)
+  posts_in_group = []
+  for relation in relations:
+    post = Post.query.filter_by(id = relation.post_id).first()
+    posts_in_group.append(post)
+  return render_template('group.html', posts = posts_in_group) # group.htmlに変数group_idを渡す
 
 @main.route('/groups/create')
 @login_required
