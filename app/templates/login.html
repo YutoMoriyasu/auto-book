@@ -15,12 +15,12 @@
   </header>
   <main>
     <div class="container py-5">
-      <form method='POST'>
-        <label for="">ユーザー名</label>
-        <input type="text" name="username">
+      <form method="POST" action="/login">
         <label for="">メールアドレス</label>
         <input type="email" name="email">
-        <input type="submit" value="ログイン">
+        <label for="">パスワード</label>
+        <input type="password" name="password">
+        <button type="submit">ログイン</button>
       </form>
     </div>
   </main>
