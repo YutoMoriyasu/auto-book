@@ -1,6 +1,6 @@
 /* このファイルにページのスタイルに関する情報を記述する */
 
-header ul {
+ul {
   list-style: none;
 }
 
