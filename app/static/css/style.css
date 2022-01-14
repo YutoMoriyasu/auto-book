@@ -4,6 +4,18 @@ ul {
   list-style: none;
 }
 
+header {
+  position: fixed;
+  width: 100%;
+  padding: 15px 0;
+  background-color: #fff;
+}
+
+main {
+  padding-top: 94px;
+  background-color: #F8F8F8;
+}
+
 header ul li a {
   color: #333;
   font-weight: bold;
