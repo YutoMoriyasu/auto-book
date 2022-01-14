@@ -3,11 +3,11 @@
 {% block content %}
 <form method="POST" action="/register">
   <label for="">記事URL</label>
-  <input type="text" name="article_url">
-  <label for="">記事グループ</label>
+  <input type="text" name="article_url" required>
+  <!-- <label for="">記事グループ</label>
   <input type="" name="article_group">
   <label for="">記事のタグ</label>
-  <input type="text" name="article_url">
+  <input type="text" name="article_url"> -->
   <input type="submit" value="登録する">
 </form>
 {% endblock %}

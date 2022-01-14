@@ -2,5 +2,21 @@
 
 {% block content %}
 <h1>記事グループ一覧</h1>
-<p>テンプレートに値を渡してみる: {{ test }}</p>
+<ul>
+  {% for group in groups %}
+  <li>
+    <a href="{{ url_for('main.group', group_id = group.id) }}">
+      {{ group.name }}
+    </a>
+    <ul>
+      {% for post in data[group.id] %}
+      <li>
+        <p>{{ post.title }}</p>
+        <p>{{ post.url }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </li>
+  {% endfor %}
+</ul>
 {% endblock %}
