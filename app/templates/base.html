@@ -6,11 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-  <header class="py-3">
+  <header>
     <div class="container">
-      <p>AutoBook</p>
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <a href="/">
+            <img src="/static/img/logo.png" alt="" style="width: 150px;">
+          </a>
+        </div>
+        <div class="menu">
+          <ul class="d-md-flex align-items-center mb-0 mt-2">
+            {% if current_user.is_authenticated %}
+            <li class="mr-3">
+              <a href="{{ url_for('main.register_post') }}">記事登録</a>
+            </li>
+            <li class="mr-3">
+              <a href="{{ url_for('main.groups_create') }}">グループ作成</a>
+            </li>
+            <li class="mr-3">
+              <a href="{{ url_for('main.posts') }}">記事一覧</a>
+            </li>
+            {% endif %}
+            {% if not current_user.is_authenticated %}
+            <li class="mr-3">
+              <a href="{{ url_for('auth.signup') }}">ユーザー登録</a>
+            </li>
+            <li class="mr-3">
+              <a href="{{ url_for('auth.login') }}">ログイン</a>
+            </li>
+            {% endif %}
+            {% if current_user.is_authenticated %}
+            <li class="mr-3">
+              <a href="{{ url_for('auth.logout') }}">ログアウト</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
     </div>
   </header>
   <main>

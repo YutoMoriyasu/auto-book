@@ -1,1 +1,77 @@
 /* このファイルにページのスタイルに関する情報を記述する */
+
+ul {
+  list-style: none;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  padding: 15px 0;
+  background-color: #fff;
+}
+
+main {
+  padding-top: 94px;
+  background-color: #F8F8F8;
+}
+
+header ul li a {
+  color: #333;
+  font-weight: bold;
+}
+
+header ul li a:hover {
+  color: #666;
+  text-decoration: underline #666;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.auth-form {
+  min-width: 400px;
+  padding: 20px;
+  background-color: #efefef;
+  border-radius: 6px;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.auth-form button {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #666;
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.auth-form .notification {
+  padding: 8px;
+  background-color: #fc4067;
+  margin-bottom: 15px;
+  border-radius: 6px;
+}
+
+.auth-form .notification p,
+.auth-form .notification a,
+.auth-form .notification a:hover {
+  color: #fff;
+  margin-bottom: 0;
+}
+
+.auth-form .notification a {
+  text-decoration: underline;
+}
+
+.auth-form .notification a:hover {
+  opacity: 0.8;
+}

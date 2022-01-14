@@ -2,21 +2,22 @@
 
 {% block content %}
 <h1>記事グループ一覧</h1>
-<ul>
+<div class="pt-3">
   {% for group in groups %}
-  <li>
-    <a href="{{ url_for('main.group', group_id = group.id) }}">
-      {{ group.name }}
-    </a>
-    <ul>
+  <div class="mb-4">
+    <div class="group-item p-2 mb-2 font-weight-bold bg-dark rounded-lg">
+      <a href="{{ url_for('main.group', group_id = group.id) }}" class="text-white">
+        {{ group.name }}
+      </a>
+    </div>
+    <div>
       {% for post in data[group.id] %}
-      <li>
-        <p>{{ post.title }}</p>
-        <p>{{ post.url }}</p>
-      </li>
+      <div>
+        <iframe class="hatenablogcard" style="width:100%;height:155px;max-width:100%;" src="https://hatenablog-parts.com/embed?url={{ post.url }}" width="300" height="150" frameborder="0" scrolling="no"></iframe>
+      </div>
       {% endfor %}
-    </ul>
-  </li>
+    </div>
+  </div>
   {% endfor %}
-</ul>
+</div>
 {% endblock %}
