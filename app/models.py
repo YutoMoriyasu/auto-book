@@ -23,6 +23,8 @@ class Group(db.Model):
   __tablename__ = 'group'
   id = db.Column(UUIDType(binary=False), primary_key=True, default=str(uuid.uuid4()))
   name = db.Column(db.String(1000))
+  user_id = db.Column(db.Integer, primary_key=True)
+  created_at = db.Column(db.DATETIME)
 
 class GroupPost(db.Model):
   __tablename__ = 'group_post'
