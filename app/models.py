@@ -19,12 +19,12 @@ class Post(db.Model):
   url = db.Column(db.String(1000))
   created_at = db.Column(db.DATETIME)
 
-class Group(db.model):
+class Group(db.Model):
   __tablename__ = 'group'
   id = db.Column(UUIDType(binary=False), primary_key=True, default=str(uuid.uuid4()))
   name = db.Column(db.String(1000))
 
-class GroupPost(db.model):
+class GroupPost(db.Model):
   __tablename__ = 'group_post'
   id = db.Column(db.Integer, primary_key=True)
   group_id = db.Column(UUIDType(binary=False))
