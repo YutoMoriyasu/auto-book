@@ -7,6 +7,7 @@ class User(UserMixin, db.Model):
   email = db.Column(db.String(100), unique=True)
   password = db.Column(db.String(100))
   name = db.Column(db.String(1000))
+  created_at = db.Column(db.DATETIME)
 
 class Post(db.Model):
   __tablename__ = 'post'
@@ -14,3 +15,4 @@ class Post(db.Model):
   user_id = db.Column(db.Integer)
   title = db.Column(db.String(1000))
   url = db.Column(db.String(1000))
+  created_at = db.Column(db.DATETIME)

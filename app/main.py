@@ -1,8 +1,10 @@
+from sqlalchemy.sql.sqltypes import TIMESTAMP
 from app.auth import *
 from flask import Blueprint, render_template, redirect, url_for, request
 from flask_login import login_required, current_user
 from bs4 import BeautifulSoup
 import requests
+import datetime
 from . import db
 
 main = Blueprint('main', __name__)
@@ -37,7 +39,7 @@ def register_post():
   soup = BeautifulSoup(res.text, 'html.parser')
   post_title = soup.find('title').text
 
-  new_post = Post(user_id = login_user_id, url = post_url, title = post_title)
+  new_post = Post(user_id = login_user_id, url = post_url, title = post_title, created_at = datetime.datetime.now())
 
   db.session.add(new_post)
   db.session.commit()
