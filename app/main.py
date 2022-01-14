@@ -30,12 +30,13 @@ def index():
 @login_required
 def group(group_id):
   # TODO 個別のグループの情報を取得する処理を記述する
+  group = Group.query.filter_by(id = group_id).first()
   relations = GroupPost.query.filter_by(group_id = group_id)
   posts_in_group = []
   for relation in relations:
     post = Post.query.filter_by(id = relation.post_id).first()
     posts_in_group.append(post)
-  return render_template('group.html', posts = posts_in_group) # group.htmlに変数group_idを渡す
+  return render_template('group.html', posts = posts_in_group, group_name = group.name) # group.htmlに変数group_idを渡す
 
 @main.route('/groups/create')
 @login_required
@@ -56,22 +57,26 @@ def groups_create_post():
 @main.route('/register')
 @login_required
 def register():
-  return render_template('register.html')
+  groups = Group.query.filter_by(user_id = current_user.id)
+  return render_template('register.html', groups = groups)
 
 @main.route('/register', methods=['POST'])
 def register_post():
+  group_id = request.form.get('group_id')
   post_url = request.form.get('article_url')
   login_user_id = current_user.id
-
   res = requests.get(post_url)
   soup = BeautifulSoup(res.text, 'html.parser')
   post_title = soup.find('title').text
-
   new_post = Post(user_id = login_user_id, url = post_url, title = post_title, created_at = datetime.datetime.now())
-
   db.session.add(new_post)
   db.session.commit()
-  return redirect(url_for('main.posts'))
+  if group_id:
+    post = Post.query.filter_by(title = post_title).first()
+    new_relation = GroupPost(group_id = group_id, post_id = post.id)
+    db.session.add(new_relation)
+    db.session.commit()
+  return redirect(url_for('main.index'))
 
 # 記事の表示
 @main.route('/posts')

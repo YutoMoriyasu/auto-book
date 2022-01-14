@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>個別のグループページ</h1>
+<h1 class="mb-3">{{ group_name }}の記事一覧</h1>
 <div>
   {% for post in posts %}
   <div>
-    <p>{{ post.title }}</p>
-    <p>{{ post.url }}</p>
+    <iframe class="hatenablogcard" style="width:100%;height:155px;max-width:100%;" src="https://hatenablog-parts.com/embed?url={{ post.url }}" width="300" height="150" frameborder="0" scrolling="no"></iframe>
   </div>
   {% endfor %}
 </div>
