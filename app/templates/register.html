@@ -1,15 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method="POST" action="/register">
-  <label for="">記事URL</label>
-  <input type="text" name="article_url" required>
-  <select name="group_id" id="">
-    <option value="">記事グループ</option>
-    {% for group in groups %}
-    <option value="{{group.id}}">{{group.name}}</option>
-    {% endfor %}
-  </select>
-  <input type="submit" value="登録する">
-</form>
+<h1>記事を登録する</h1>
+<div class="py-4">
+  <form method="POST" action="/register">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="notification">
+      <p class="text-center">
+        {{ messages[0] }}
+      </p>
+    </div>
+    {% endif %}
+    {% endwith %}
+    <label for="">記事URL</label>
+    <input type="text" name="article_url" required>
+    <select name="group_id" id="">
+      <option value="">記事グループ</option>
+      {% for group in groups %}
+      <option value="{{group.id}}">{{group.name}}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" value="登録する">
+  </form>
+</div>
 {% endblock %}

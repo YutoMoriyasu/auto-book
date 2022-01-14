@@ -1,9 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method="POST" action="/groups/create">
-  <label for="">記事グループの名前</label>
-  <input type="text" name="group_name" required>
-  <button type="submit">作成する</button>
-</form>
+<h1>記事グループを作成する</h1>
+<div class="py-4">
+  <form method="POST" action="/groups/create">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="notification">
+      <p class="text-center">
+        {{ messages[0] }}
+      </p>
+    </div>
+    {% endif %}
+    {% endwith %}
+    <label for="">記事グループの名前</label>
+    <input type="text" name="group_name" required>
+    <button type="submit">作成する</button>
+  </form>
+</div>
 {% endblock %}
