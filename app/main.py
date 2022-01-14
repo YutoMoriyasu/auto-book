@@ -16,7 +16,6 @@ main = Blueprint('main', __name__)
 def index():
   # TODO ユーザーに対して、登録しているグループの情報を取得する処理を記述する
   individual_groups = Group.query.filter_by(user_id = current_user.id)
-
   data = {}
   for individual_group in individual_groups:
     data[individual_group.id] = []
