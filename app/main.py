@@ -60,11 +60,23 @@ def register_post():
 
   db.session.add(new_post)
   db.session.commit()
-  return redirect(url_for('main.all'))
+  return redirect(url_for('main.posts'))
 
 # 記事の表示
-@main.route('/all')
+@main.route('/posts')
 @login_required
-def all():
+def posts():
   individual_posts = Post.query.filter_by(user_id = current_user.id)
-  return render_template('all.html', posts = individual_posts)
+  individual_groups = Group.query.filter_by(user_id = current_user.id)
+  return render_template('posts.html', posts = individual_posts, groups = individual_groups)
+
+@main.route('/create_relation', methods=['POST'])
+def create_relation():
+  post_id = request.form.get('post_id')
+  group_id = request.form.get('group_id')
+
+  new_relation = GroupPost(group_id = group_id, post_id = post_id)
+
+  db.session.add(new_relation)
+  db.session.commit()
+  return redirect(url_for('main.posts'))
