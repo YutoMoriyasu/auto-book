@@ -2,12 +2,12 @@
 
 {% block content %}
 <h1>個別のグループページ</h1>
-<ul>
+<div>
   {% for post in posts %}
-  <li>
+  <div>
     <p>{{ post.title }}</p>
     <p>{{ post.url }}</p>
-  </li>
+  </div>
   {% endfor %}
-</ul>
+</div>
 {% endblock %}

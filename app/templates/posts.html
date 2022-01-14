@@ -2,9 +2,9 @@
 
 {% block content %}
 <h1>記事一覧</h1>
-<ul>
+<div>
   {% for post in posts %}
-  <li>
+  <div>
     <iframe class="hatenablogcard" style="width:100%;height:155px;max-width:680px;" src="https://hatenablog-parts.com/embed?url={{ post.url }}" width="300" height="150" frameborder="0" scrolling="no"></iframe>
     <form method="POST" action="/create_relation">
       <input type="hidden" value="{{post.id}}" name="post_id">
@@ -16,7 +16,7 @@
       </select>
       <button type="submit">追加する</button>
     </form>
-  </li>
+  </div>
   {% endfor %}
-</ul>
+</div>
 {% endblock %}

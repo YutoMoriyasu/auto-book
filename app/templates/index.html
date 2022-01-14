@@ -2,20 +2,20 @@
 
 {% block content %}
 <h1>記事グループ一覧</h1>
-<ul>
+<div>
   {% for group in groups %}
-  <li>
+  <div>
     <a href="{{ url_for('main.group', group_id = group.id) }}">
       {{ group.name }}
     </a>
-    <ul>
+    <div>
       {% for post in data[group.id] %}
-      <li>
+      <div>
         <iframe class="hatenablogcard" style="width:100%;height:155px;max-width:680px;" src="https://hatenablog-parts.com/embed?url={{ post.url }}" width="300" height="150" frameborder="0" scrolling="no"></iframe>
-      </li>
+      </div>
       {% endfor %}
-    </ul>
-  </li>
+    </div>
+  </div>
   {% endfor %}
-</ul>
+</div>
 {% endblock %}
