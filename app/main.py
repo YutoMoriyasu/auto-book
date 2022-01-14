@@ -1,6 +1,8 @@
 from app.auth import *
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for, request
 from flask_login import login_required, current_user
+from bs4 import BeautifulSoup
+import requests
 from . import db
 
 main = Blueprint('main', __name__)
@@ -26,8 +28,24 @@ def group(group_id):
 def register():
   return render_template('register.html')
 
+@main.route('/register', methods=['POST'])
+def register_post():
+  post_url = request.form.get('article_url')
+  login_user_id = current_user.id
+
+  res = requests.get(post_url)
+  soup = BeautifulSoup(res.text, 'html.parser')
+  post_title = soup.find('title').text
+
+  new_post = Post(user_id = login_user_id, url = post_url, title = post_title)
+
+  db.session.add(new_post)
+  db.session.commit()
+  return redirect(url_for('main.all'))
+
 # 記事の表示
 @main.route('/all')
 @login_required
 def all():
-  return render_template('all.html', all='all')
+  individual_posts = Post.query.filter_by(user_id = current_user.id)
+  return render_template('all.html', posts = individual_posts)

@@ -1,9 +1,8 @@
 from flask import *
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from sqlalchemy import *
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
 
 db = SQLAlchemy()
 
@@ -15,6 +14,7 @@ def create_app():
   app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = false
 
   db.init_app(app)
+  migrate = Migrate(app, db)
 
   login_manager = LoginManager()
   login_manager.login_view = 'auth.login'
