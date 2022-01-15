@@ -43,6 +43,7 @@ def groups_create():
 
 @main.route('/groups/create', methods=['POST'])
 def groups_create_post():
+  current_url = request.form.get('current_path')
   group_name = request.form.get('group_name')
 
   groups = Group.query.filter_by(name = group_name)
@@ -54,14 +55,14 @@ def groups_create_post():
 
   if group_name_is_used:
     flash('同じグループ名が使われています。異なるグループ名を入力してください。')
-    return redirect(url_for('main.groups_create'))
+    return redirect(current_url)
   else:
     user_id = current_user.id
     new_group = Group(user_id = user_id, name = group_name, created_at = datetime.datetime.now())
 
     db.session.add(new_group)
     db.session.commit()
-    return
+    return redirect(current_url)
 
 # 記事登録画面
 @main.route('/register', methods=['POST'])
