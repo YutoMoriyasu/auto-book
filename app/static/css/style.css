@@ -22,8 +22,9 @@ header ul li a {
 }
 
 header ul li a:hover {
+  opacity: 0.8;
   color: #666;
-  text-decoration: underline #666;
+  text-decoration: underline #666!important;
 }
 
 h1 {

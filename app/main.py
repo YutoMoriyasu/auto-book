@@ -1,6 +1,6 @@
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from app.auth import *
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, jsonify
 from flask_login import login_required, current_user
 from bs4 import BeautifulSoup
 import requests
@@ -48,7 +48,7 @@ def groups_create_post():
   groups = Group.query.filter_by(name = group_name)
   group_name_is_used = False
   for group in groups:
-    if group.name == group_name:
+    if (group.name == group_name) & (group.user_id == current_user.id):
       group_name_is_used = True
       break
 
@@ -61,17 +61,12 @@ def groups_create_post():
 
     db.session.add(new_group)
     db.session.commit()
-    return redirect(url_for('main.index'))
+    return
 
 # 記事登録画面
-@main.route('/register')
-@login_required
-def register():
-  groups = Group.query.filter_by(user_id = current_user.id)
-  return render_template('register.html', groups = groups)
-
 @main.route('/register', methods=['POST'])
 def register_post():
+  current_url = request.form.get('current_path')
   group_id = request.form.get('group_id')
   post_url = request.form.get('article_url')
   login_user_id = current_user.id
@@ -82,12 +77,12 @@ def register_post():
   posts = Post.query.filter_by(title = post_title)
   post_is_registered = False
   for post in posts:
-    if post.title == post_title:
+    if (post.title == post_title) & (login_user_id == post.user_id):
       post_is_registered = True
       break
   if post_is_registered:
     flash('記事がすでに登録されています。')
-    return redirect(url_for('main.register'))
+    return redirect(current_url)
   else:
     new_post = Post(user_id = login_user_id, url = post_url, title = post_title, created_at = datetime.datetime.now())
     db.session.add(new_post)
@@ -97,7 +92,7 @@ def register_post():
       new_relation = GroupPost(group_id = group_id, post_id = post.id)
       db.session.add(new_relation)
       db.session.commit()
-    return redirect(url_for('main.index'))
+    return redirect(current_url)
 
 # 記事の表示
 @main.route('/posts')
