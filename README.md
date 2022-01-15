@@ -8,6 +8,8 @@
 
 `(venv)$ pip install flask`
 
+Make sure you have installed all libraries
+
 ## Development
 
 `$ . venv/bin/activate`
