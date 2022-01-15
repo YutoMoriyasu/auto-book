@@ -24,7 +24,7 @@ header ul li a {
 header ul li a:hover {
   opacity: 0.8;
   color: #666;
-  text-decoration: underline #666!important;
+  text-decoration: underline #666 !important;
 }
 
 h1 {
@@ -99,4 +99,16 @@ h1 {
   margin-left: 10px;
   border-radius: 4px;
   font-size: 16px;
+}
+
+.posts-side-form .archive-button {
+  background-color: #fc4067;
+  font-weight: bold;
+  border: none;
+}
+
+.posts-side-form .restore-button {
+  background-color: #00d1b2;
+  font-weight: bold;
+  border: none;
 }

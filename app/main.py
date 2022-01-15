@@ -5,6 +5,7 @@ from flask_login import login_required, current_user
 from bs4 import BeautifulSoup
 import requests
 import datetime
+import uuid
 from . import db
 from .models import *
 
@@ -21,6 +22,8 @@ def index():
     relations = GroupPost.query.filter_by(group_id = individual_group.id)
     for relation in relations:
       post = Post.query.filter_by(id = relation.post_id).first()
+      if post.is_archived == True:
+        continue
       data[individual_group.id].append(post)
   return render_template('index.html', groups=individual_groups, data = data)
 
@@ -33,6 +36,8 @@ def group(group_id):
   posts_in_group = []
   for relation in relations:
     post = Post.query.filter_by(id = relation.post_id).first()
+    if post.is_archived == True:
+      continue
     posts_in_group.append(post)
   return render_template('group.html', posts = posts_in_group, group_name = group.name) # group.htmlに変数group_idを渡す
 
@@ -53,7 +58,7 @@ def groups_create_post():
     return redirect(current_url)
   else:
     user_id = current_user.id
-    new_group = Group(user_id = user_id, name = group_name, created_at = datetime.datetime.now())
+    new_group = Group(id = str(uuid.uuid4()), user_id = user_id, name = group_name, created_at = datetime.datetime.now())
 
     db.session.add(new_group)
     db.session.commit()
@@ -83,6 +88,7 @@ def register_post():
     new_post = Post(user_id = login_user_id, url = post_url, title = post_title, created_at = datetime.datetime.now())
     db.session.add(new_post)
     db.session.commit()
+    flash('記事が登録されました。')
     if group_id:
       post = Post.query.filter_by(title = post_title).first()
       new_relation = GroupPost(group_id = group_id, post_id = post.id)
@@ -94,7 +100,7 @@ def register_post():
 @main.route('/posts')
 @login_required
 def posts():
-  individual_posts = Post.query.filter_by(user_id = current_user.id)
+  individual_posts = Post.query.filter_by(user_id = current_user.id, is_archived = False)
   individual_groups = Group.query.filter_by(user_id = current_user.id)
   return render_template('posts.html', posts = individual_posts, groups = individual_groups)
 
@@ -118,3 +124,40 @@ def create_relation():
     flash('「' + group_name + '」に記事が追加されました。')
     return redirect(current_url)
 
+@main.route('/archive_post', methods=['POST'])
+def archive_post():
+  current_url = request.form.get('current_path')
+  post_id = request.form.get('post_id')
+
+  post = Post.query.filter_by(id = post_id).first()
+  post.is_archived = True
+
+  flash(post.title + 'がアーカイブされました。')
+
+  db.session.add(post)
+  db.session.commit()
+
+  return redirect(current_url)
+
+@main.route('/archives/restore', methods=['POST'])
+def restore_post():
+  current_url = request.form.get('current_path')
+  post_id = request.form.get('post_id')
+
+  post = Post.query.filter_by(id = post_id).first()
+  post.is_archived = False
+
+  flash(post.title + 'が復元されました。')
+
+  db.session.add(post)
+  db.session.commit()
+
+  return redirect(current_url)
+
+@main.route('/archives')
+@login_required
+def archives():
+  login_user_id = current_user.id
+  posts = Post.query.filter_by(user_id = login_user_id, is_archived = True)
+
+  return render_template('archives.html', posts = posts)

@@ -32,6 +32,9 @@
             <li class="mr-3">
               <a href="{{ url_for('main.posts') }}">記事一覧</a>
             </li>
+            <li class="mr-3">
+              <a href="{{ url_for('main.archives') }}">アーカイブ</a>
+            </li>
             {% endif %}
             {% if not current_user.is_authenticated %}
             <li class="mr-3">

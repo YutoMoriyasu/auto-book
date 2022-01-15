@@ -6,17 +6,24 @@
   {% for post in posts %}
   <div class="d-flex align-items-center justify-content-between mb-3">
     <iframe class="hatenablogcard" style="width:100%;height:155px;max-width:680px;" src="https://hatenablog-parts.com/embed?url={{ post.url }}" width="300" height="150" frameborder="0" scrolling="no"></iframe>
-    <form method="POST" action="/create_relation" class="posts-side-form">
-      <input type="hidden" value="{{post.id}}" name="post_id">
-      <select name="group_id" id="">
-        <option value="">記事グループを選択</option>
-        {% for group in groups %}
-        <option value="{{group.id}}">{{group.name}}</option>
-        {% endfor %}
-      </select>
-      <input type="hidden" name="current_path" value="" id="currentPath">
-      <button type="submit">追加する</button>
-    </form>
+    <div>
+      <form method="POST" action="/create_relation" class="posts-side-form">
+        <input type="hidden" value="{{post.id}}" name="post_id">
+        <select name="group_id" id="">
+          <option value="">記事グループを選択</option>
+          {% for group in groups %}
+          <option value="{{group.id}}">{{group.name}}</option>
+          {% endfor %}
+        </select>
+        <input type="hidden" name="current_path" value="" id="currentPath">
+        <button type="submit">追加する</button>
+      </form>
+      <form method="POST" action="/archive_post" class="posts-side-form mt-3">
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        <input type="hidden" name="current_path" value="" id="currentPath">
+        <button type="submit" class="w-100 m-0 archive-button">アーカイブする</button>
+      </form>
+    </div>
   </div>
   {% endfor %}
 </div>
