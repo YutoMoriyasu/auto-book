@@ -6,11 +6,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-  <header class="py-3">
+  <header>
     <div class="container">
-      <p>AutoBook</p>
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <a href="/">
+            <img src="/static/img/logo.png" alt="" style="width: 150px;">
+          </a>
+        </div>
+        <div class="nav-menu">
+          <ul class="d-md-flex align-items-center mb-0 mt-2">
+            {% if current_user.is_authenticated %}
+            <li class="mr-3">
+              <a class="btn p-0 font-weight-bold" data-toggle="modal" data-target="#registerModal">記事登録</a>
+            </li>
+            <li class="mr-3">
+              <a class="btn p-0 font-weight-bold" data-toggle="modal" data-target="#createGroupModal">グループ作成</a>
+            </li>
+            <li class="mr-3">
+              <a href="{{ url_for('main.index') }}">グループ一覧</a>
+            </li>
+            <li class="mr-3">
+              <a href="{{ url_for('main.posts') }}">記事一覧</a>
+            </li>
+            <li class="mr-3">
+              <a href="{{ url_for('main.archives') }}">アーカイブ</a>
+            </li>
+            {% endif %}
+            {% if not current_user.is_authenticated %}
+            <li class="mr-3">
+              <a href="{{ url_for('auth.signup') }}">ユーザー登録</a>
+            </li>
+            <li class="mr-3">
+              <a href="{{ url_for('auth.login') }}">ログイン</a>
+            </li>
+            {% endif %}
+            {% if current_user.is_authenticated %}
+            <li class="mr-3">
+              <a href="{{ url_for('auth.logout') }}">ログアウト</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
     </div>
   </header>
   <main>
@@ -18,9 +59,77 @@
       {% block content %}
       {% endblock %}
     </div>
+    <div class="modal" tabindex="-1" role="dialog" id="registerModal">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title font-weight-bold">記事を登録する</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" action="/register" class="base-form">
+              <div class="form-item">
+                <p class="mb-2 font-weight-bold">記事URL</p>
+                <input type="text" name="article_url" required>
+              </div>
+              <div class="form-item">
+                <p class="mb-2 font-weight-bold">グループを選択</p>
+                <select name="group_id" id="" class="w-100">
+                  <option value=""></option>
+                  {% for group in groups %}
+                  <option value="{{group.id}}">{{group.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <input type="hidden" name="current_path" value="" id="currentPath">
+              <button type="submit">登録する</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="createGroupModal">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title font-weight-bold">新規グループを作成する</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" action="/groups/create" class="base-form">
+              <div class="form-item">
+                <p class="mb-2 font-weight-bold">グループ名</p>
+                <input type="text" name="group_name" required>
+              </div>
+              <input type="hidden" name="current_path" value="" id="currentPath">
+              <button type="submit">作成する</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  <script>
+    const currentPathInputs = document.querySelectorAll('#currentPath');
+    const currentPath = location.pathname;
+    for (let input of currentPathInputs) {
+      input.value = currentPath
+    }
+  </script>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <script>
+    const message = "{{ messages[0] }}";
+    alert(message);
+  </script>
+  {% endif %}
+  {% endwith %}
 </body>
 </html>

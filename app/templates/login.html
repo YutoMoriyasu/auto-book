@@ -1,11 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method="POST" action="/login">
-  <label for="">メールアドレス</label>
-  <input type="email" name="email">
-  <label for="">パスワード</label>
-  <input type="password" name="password">
-  <button type="submit">ログイン</button>
-</form>
+<h1 class="text-center mt-5 mb-3">ログイン</h1>
+<div class="d-flex justify-content-center align-items-center flex-column">
+  <form method="POST" action="/login" class="base-form">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="notification">
+      <p class="text-center">
+        {{ messages[0] }} <br>
+        もう一度お試しください。
+      </p>
+    </div>
+    {% endif %}
+    {% endwith %}
+    <div class="form-item">
+      <input type="email" name="email" placeholder="Email" required>
+    </div>
+    <div class="form-item">
+      <input type="password" name="password" placeholder="Password" required>
+    </div>
+    <button type="submit">ログイン</button>
+    <p class="text-center my-3">
+      アカウントをお持ちでない方は<a href="{{ url_for('auth.signup') }}">新規登録</a>
+    </p>
+  </form>
+</div>
 {% endblock %}
