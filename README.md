@@ -12,7 +12,7 @@
 
 `$ . venv/bin/activate`
 
-`(venv)$ export FLASK_APP=app`
+`(venv)$ export FLASK_ENV=development`
 
 `(venv)$ flask run`
 
