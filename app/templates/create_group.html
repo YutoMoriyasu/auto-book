@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="POST" action="/groups/create">
+  <label for="">記事グループの名前</label>
+  <input type="text" name="group_name" required>
+  <button type="submit">作成する</button>
+</form>
+{% endblock %}

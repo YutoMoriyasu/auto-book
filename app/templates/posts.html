@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>記事一覧</h1>
+<ul>
+  {% for post in posts %}
+  <li>
+    <p>Title: {{post.title}}</p>
+    <p>URL: {{post.url}}</p>
+    <form method="POST" action="/create_relation">
+      <input type="hidden" value="{{post.id}}" name="post_id">
+      <select name="group_id" id="">
+        <option value="">記事グループ</option>
+        {% for group in groups %}
+        <option value="{{group.id}}">{{group.name}}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">追加する</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
