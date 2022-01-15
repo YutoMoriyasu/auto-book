@@ -36,11 +36,6 @@ def group(group_id):
     posts_in_group.append(post)
   return render_template('group.html', posts = posts_in_group, group_name = group.name) # group.htmlに変数group_idを渡す
 
-@main.route('/groups/create')
-@login_required
-def groups_create():
-  return render_template('create_group.html')
-
 @main.route('/groups/create', methods=['POST'])
 def groups_create_post():
   current_url = request.form.get('current_path')
@@ -105,11 +100,21 @@ def posts():
 
 @main.route('/create_relation', methods=['POST'])
 def create_relation():
+  current_url = request.form.get('current_path')
   post_id = request.form.get('post_id')
   group_id = request.form.get('group_id')
+  group_name = Group.query.filter_by(id = group_id).first().name
 
-  new_relation = GroupPost(group_id = group_id, post_id = post_id)
+  old_relation = GroupPost.query.filter_by(group_id = group_id, post_id = post_id).first()
+  if old_relation:
+    flash('この記事はすでに「' + group_name + '」に追加されています。')
+    return redirect(current_url)
 
-  db.session.add(new_relation)
-  db.session.commit()
-  return redirect(url_for('main.posts'))
+  else:
+    new_relation = GroupPost(group_id = group_id, post_id = post_id)
+
+    db.session.add(new_relation)
+    db.session.commit()
+    flash('「' + group_name + '」に記事が追加されました。')
+    return redirect(current_url)
+
