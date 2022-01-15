@@ -17,6 +17,7 @@ class Post(db.Model):
   user_id = db.Column(db.Integer)
   title = db.Column(db.String(1000))
   url = db.Column(db.String(1000))
+  is_archived = db.Column(db.Boolean(), default=False)
   created_at = db.Column(db.DATETIME)
 
 class Group(db.Model):
