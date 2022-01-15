@@ -6,17 +6,15 @@
 
 `$ . venv/bin/activate`
 
-`$ pip install flask`
+`(venv)$ pip install flask`
 
 ## Development
 
 `$ . venv/bin/activate`
 
-`$ export FLASK_APP=app`
+`(venv)$ export FLASK_APP=app`
 
-`$ export FLASK_ENV=development`
-
-`$ flask run`
+`(venv)$ flask run`
 
 
 Press ctrl + C to exit development

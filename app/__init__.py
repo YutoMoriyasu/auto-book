@@ -9,6 +9,7 @@ db = SQLAlchemy()
 def create_app():
   # create and configure the app
   app = Flask(__name__, instance_relative_config=True)
+  app.config['APP'] = 'app'
   app.config['SECRET_KEY'] = 'secret-key-goes-here'
   app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
   app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = false
