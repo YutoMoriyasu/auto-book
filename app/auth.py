@@ -8,11 +8,11 @@ import datetime
 
 auth = Blueprint('auth', __name__)
 
-@auth.route('/login')
+@auth.route('/auth/login')
 def login():
   return render_template('login.html')
 
-@auth.route('/login', methods=['POST'])
+@auth.route('/auth/login', methods=['POST'])
 def login_post():
   # login code goes here
   email = request.form.get('email')
@@ -31,16 +31,17 @@ def login_post():
   login_user(user, remember=remember)
   return redirect(url_for('main.index'))
 
-@auth.route('/signup')
+@auth.route('/auth/signup')
 def signup():
   return render_template('signup.html')
 
-@auth.route('/signup', methods=['POST'])
+@auth.route('/auth/signup', methods=['POST'])
 def signup_post():
   # code to validate and add user to database goes here
   email = request.form.get('email')
   name = request.form.get('name')
   password = request.form.get('password')
+  remember = True if request.form.get('remember') else False
 
   user = User.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database
 
@@ -54,9 +55,10 @@ def signup_post():
   # add the new user to the database
   db.session.add(new_user)
   db.session.commit()
-  return redirect(url_for('auth.login'))
+  login_user(new_user, remember=remember)
+  return redirect(url_for('main.index'))
 
-@auth.route('/logout')
+@auth.route('/auth/logout')
 @login_required
 def logout():
   logout_user()
