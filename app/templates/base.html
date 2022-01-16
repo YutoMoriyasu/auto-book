@@ -173,7 +173,10 @@
   {% if messages %}
   <script>
     const message = "{{ messages[0] }}";
-    alert(message);
+    const path = location.pathname;
+    if (!path.match(/auth/)) {
+      alert(message);
+    }
   </script>
   {% endif %}
   {% endwith %}
