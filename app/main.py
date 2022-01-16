@@ -11,8 +11,8 @@ from .models import *
 
 main = Blueprint('main', __name__)
 
-# トップページ
-@main.route('/')
+# トップページの表示
+@main.route('/', methods=['GET'])
 @login_required
 def index():
   individual_groups = Group.query.filter_by(user_id = current_user.id)
@@ -25,10 +25,20 @@ def index():
       if post.is_archived == True:
         continue
       data[individual_group.id].append(post)
-  return render_template('index.html', groups=individual_groups, data = data)
 
-# 個別のグループページ
-@main.route('/groups/<group_id>') # /groups/<group_id>にアクセスしたとき
+  ungrouped_posts = []
+  posts = Post.query.filter_by(user_id = current_user.id)
+  for post in posts:
+    relation = GroupPost.query.filter_by(post_id = post.id).first()
+    if relation:
+      continue
+    else:
+      ungrouped_posts.append(post)
+
+  return render_template('index.html', groups=individual_groups, data = data, ungrouped_posts = ungrouped_posts)
+
+# 個別のグループページの表示
+@main.route('/groups/<group_id>', methods=['GET'])
 @login_required
 def group(group_id):
   group = Group.query.filter_by(id = group_id).first()
@@ -39,8 +49,9 @@ def group(group_id):
     if post.is_archived == True:
       continue
     posts_in_group.append(post)
-  return render_template('group.html', posts = posts_in_group, group_name = group.name) # group.htmlに変数group_idを渡す
+  return render_template('group.html', posts = posts_in_group, group_name = group.name)
 
+# グループ作成
 @main.route('/groups/create', methods=['POST'])
 def groups_create_post():
   current_url = request.form.get('current_path')
@@ -64,7 +75,7 @@ def groups_create_post():
     db.session.commit()
     return redirect(current_url)
 
-# 記事登録画面
+# 記事登録
 @main.route('/register', methods=['POST'])
 def register_post():
   current_url = request.form.get('current_path')
@@ -97,13 +108,14 @@ def register_post():
     return redirect(current_url)
 
 # 記事の表示
-@main.route('/posts')
+@main.route('/posts', methods=['GET'])
 @login_required
 def posts():
   individual_posts = Post.query.filter_by(user_id = current_user.id, is_archived = False)
   individual_groups = Group.query.filter_by(user_id = current_user.id)
   return render_template('posts.html', posts = individual_posts, groups = individual_groups)
 
+# 記事とグループの関連付け
 @main.route('/create_relation', methods=['POST'])
 def create_relation():
   current_url = request.form.get('current_path')
@@ -124,6 +136,7 @@ def create_relation():
     flash('「' + group_name + '」に記事が追加されました。')
     return redirect(current_url)
 
+# 記事のアーカイブ
 @main.route('/archive_post', methods=['POST'])
 def archive_post():
   current_url = request.form.get('current_path')
@@ -139,6 +152,7 @@ def archive_post():
 
   return redirect(current_url)
 
+# アーカイブ記事の復元
 @main.route('/archives/restore', methods=['POST'])
 def restore_post():
   current_url = request.form.get('current_path')
@@ -154,7 +168,8 @@ def restore_post():
 
   return redirect(current_url)
 
-@main.route('/archives')
+# アーカイブの表示
+@main.route('/archives', methods=['GET'])
 @login_required
 def archives():
   login_user_id = current_user.id
