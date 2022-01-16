@@ -114,7 +114,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form method="POST" action="/register" class="base-form">
+            <form method="POST" action="/register" class="base-form" id="registerForm">
               <div class="form-item">
                 <p class="mb-2 font-weight-bold">記事URL</p>
                 <input type="url" name="article_url" required>
@@ -145,7 +145,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form method="POST" action="/groups/create" class="base-form">
+            <form method="POST" action="/groups/create" class="base-form" id="createGroupForm">
               <div class="form-item">
                 <p class="mb-2 font-weight-bold">グループ名</p>
                 <input type="text" name="group_name" required>
@@ -154,6 +154,13 @@
               <button type="submit">作成する</button>
             </form>
           </div>
+        </div>
+      </div>
+    </div>
+    <div id="loading">
+      <div id="spinner" class="d-flex justify-content-center align-items-center">
+        <div class="spinner-border text-secondary" role="status">
+          <span class="sr-only">Loading...</span>
         </div>
       </div>
     </div>
@@ -168,6 +175,15 @@
     for (let input of currentPathInputs) {
       input.value = currentPath
     }
+    $('#loading ,#spinner').css('display','none');
+    const registerForm = document.getElementById('registerForm')
+    const createGroupForm = document.getElementById('createGroupForm')
+    registerForm.addEventListener('submit', ()=>{
+      $('#loading ,#spinner').css('display','block');
+    })
+    createGroupForm.addEventListener('submit', ()=>{
+      $('#loading ,#spinner').css('display','block');
+    })
   </script>
   {% with messages = get_flashed_messages() %}
   {% if messages %}
