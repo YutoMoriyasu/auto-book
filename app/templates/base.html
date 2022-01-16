@@ -97,7 +97,10 @@
     </div>
   </header>
   <main>
-    <div class="container py-5">
+    <div class="container pt-3 pb-5">
+      {% if current_user.is_authenticated %}
+      <p class="mb-4" style="font-size: 12px;"><span class="font-weight-bold">{{ current_user.name }}</span>としてログイン中</p>
+      {% endif %}
       {% block content %}
       {% endblock %}
     </div>
@@ -170,7 +173,10 @@
   {% if messages %}
   <script>
     const message = "{{ messages[0] }}";
-    alert(message);
+    const path = location.pathname;
+    if (!path.match(/auth/)) {
+      alert(message);
+    }
   </script>
   {% endif %}
   {% endwith %}
