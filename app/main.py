@@ -99,7 +99,6 @@ def register_post():
     new_post = Post(user_id = login_user_id, url = post_url, title = post_title, created_at = datetime.datetime.now())
     db.session.add(new_post)
     db.session.commit()
-    flash('記事が登録されました。')
     if group_id:
       post = Post.query.filter_by(title = post_title).first()
       new_relation = GroupPost(group_id = group_id, post_id = post.id)
@@ -133,7 +132,6 @@ def create_relation():
 
     db.session.add(new_relation)
     db.session.commit()
-    flash('「' + group_name + '」に記事が追加されました。')
     return redirect(current_url)
 
 # 記事のアーカイブ
