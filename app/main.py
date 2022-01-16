@@ -25,7 +25,17 @@ def index():
       if post.is_archived == True:
         continue
       data[individual_group.id].append(post)
-  return render_template('index.html', groups=individual_groups, data = data)
+
+  ungrouped_posts = []
+  posts = Post.query.filter_by(user_id = current_user.id)
+  for post in posts:
+    relation = GroupPost.query.filter_by(post_id = post.id).first()
+    if relation:
+      continue
+    else:
+      ungrouped_posts.append(post)
+
+  return render_template('index.html', groups=individual_groups, data = data, ungrouped_posts = ungrouped_posts)
 
 # 個別のグループページの表示
 @main.route('/groups/<group_id>', methods=['GET'])
