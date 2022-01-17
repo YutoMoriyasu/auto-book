@@ -1,3 +1,4 @@
+from turtle import pos
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from app.auth import *
 from flask import Blueprint, render_template, redirect, url_for, request, jsonify
@@ -112,7 +113,13 @@ def register_post():
 def posts():
   individual_posts = Post.query.filter_by(user_id = current_user.id, is_archived = False)
   individual_groups = Group.query.filter_by(user_id = current_user.id)
-  return render_template('posts.html', posts = individual_posts, groups = individual_groups)
+  comment_data = {}
+  for post in individual_posts:
+    comment_data[post.id] = []
+    comments = Comment.query.filter_by(post_id = post.id)
+    for comment in comments:
+      comment_data[post.id].append(comment)
+  return render_template('posts.html', posts = individual_posts, groups = individual_groups, comments = comment_data)
 
 # 記事とグループの関連付け
 @main.route('/create_relation', methods=['POST'])
