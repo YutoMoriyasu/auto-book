@@ -18,25 +18,35 @@ main = Blueprint('main', __name__)
 def index():
   individual_groups = Group.query.filter_by(user_id = current_user.id)
   data = {}
+  grouped_post_comment_data = {}
   for individual_group in individual_groups:
     data[individual_group.id] = []
     relations = GroupPost.query.filter_by(group_id = individual_group.id)
     for relation in relations:
       post = Post.query.filter_by(id = relation.post_id).first()
+      grouped_post_comments = Comment.query.filter_by(post_id = post.id)
+      grouped_post_comment_data[post.id] = []
       if post.is_archived == True:
         continue
+      for comment in grouped_post_comments:
+        grouped_post_comment_data[post.id].append(comment)
       data[individual_group.id].append(post)
 
   ungrouped_posts = []
+  ungrouped_post_comment_data = {}
   posts = Post.query.filter_by(user_id = current_user.id)
   for post in posts:
     relation = GroupPost.query.filter_by(post_id = post.id).first()
+    ungrouped_post_comments = Comment.query.filter_by(post_id = post.id)
+    ungrouped_post_comment_data[post.id] = []
     if relation:
       continue
     else:
+      for comment in ungrouped_post_comments:
+        ungrouped_post_comment_data[post.id].append(comment)
       ungrouped_posts.append(post)
 
-  return render_template('index.html', groups=individual_groups, data = data, ungrouped_posts = ungrouped_posts)
+  return render_template('index.html', groups=individual_groups, data = data, ungrouped_posts = ungrouped_posts, grouped_post_comment_data = grouped_post_comment_data, ungrouped_post_comment_data = ungrouped_post_comment_data)
 
 # 個別のグループページの表示
 @main.route('/groups/<group_id>', methods=['GET'])
