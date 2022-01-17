@@ -6,7 +6,7 @@
 
 `$ . venv/bin/activate`
 
-`(venv)$ pip install flask`
+`(venv)$ pip install -r requirements.txt`
 
 Make sure you have installed all libraries
 
