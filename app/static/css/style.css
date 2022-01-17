@@ -130,3 +130,8 @@ h1 {
   height: 100%;
   z-index: 1061;
 }
+
+.comment-item {
+  border-bottom: 1px solid #333;
+  padding-top: 5px;
+}

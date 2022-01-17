@@ -1,3 +1,4 @@
+from turtle import pos
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from app.auth import *
 from flask import Blueprint, render_template, redirect, url_for, request, jsonify
@@ -17,30 +18,41 @@ main = Blueprint('main', __name__)
 def index():
   individual_groups = Group.query.filter_by(user_id = current_user.id)
   data = {}
+  grouped_post_comment_data = {}
   for individual_group in individual_groups:
     data[individual_group.id] = []
     relations = GroupPost.query.filter_by(group_id = individual_group.id)
     for relation in relations:
       post = Post.query.filter_by(id = relation.post_id).first()
+      grouped_post_comments = Comment.query.filter_by(post_id = post.id)
+      grouped_post_comment_data[post.id] = []
       if post.is_archived == True:
         continue
+      for comment in grouped_post_comments:
+        grouped_post_comment_data[post.id].append(comment)
       data[individual_group.id].append(post)
 
   ungrouped_posts = []
+  ungrouped_post_comment_data = {}
   posts = Post.query.filter_by(user_id = current_user.id)
   for post in posts:
     relation = GroupPost.query.filter_by(post_id = post.id).first()
+    ungrouped_post_comments = Comment.query.filter_by(post_id = post.id)
+    ungrouped_post_comment_data[post.id] = []
     if relation:
       continue
     else:
+      for comment in ungrouped_post_comments:
+        ungrouped_post_comment_data[post.id].append(comment)
       ungrouped_posts.append(post)
 
-  return render_template('index.html', groups=individual_groups, data = data, ungrouped_posts = ungrouped_posts)
+  return render_template('index.html', groups=individual_groups, data = data, ungrouped_posts = ungrouped_posts, grouped_post_comment_data = grouped_post_comment_data, ungrouped_post_comment_data = ungrouped_post_comment_data)
 
 # 個別のグループページの表示
 @main.route('/groups/<group_id>', methods=['GET'])
 @login_required
 def group(group_id):
+  groups = Group.query.filter_by(user_id = current_user.id)
   group = Group.query.filter_by(id = group_id).first()
   relations = GroupPost.query.filter_by(group_id = group_id)
   posts_in_group = []
@@ -49,7 +61,14 @@ def group(group_id):
     if post.is_archived == True:
       continue
     posts_in_group.append(post)
-  return render_template('group.html', posts = posts_in_group, group_name = group.name)
+  
+  comment_data = {}
+  for post in posts_in_group:
+    comment_data[post.id] = []
+    comments = Comment.query.filter_by(post_id = post.id)
+    for comment in comments:
+      comment_data[post.id].append(comment)
+  return render_template('group.html', posts = posts_in_group, group_name = group.name, groups = groups, comments = comment_data)
 
 # グループ作成
 @main.route('/groups/create', methods=['POST'])
@@ -99,7 +118,6 @@ def register_post():
     new_post = Post(user_id = login_user_id, url = post_url, title = post_title, created_at = datetime.datetime.now())
     db.session.add(new_post)
     db.session.commit()
-    flash('記事が登録されました。')
     if group_id:
       post = Post.query.filter_by(title = post_title).first()
       new_relation = GroupPost(group_id = group_id, post_id = post.id)
@@ -113,7 +131,13 @@ def register_post():
 def posts():
   individual_posts = Post.query.filter_by(user_id = current_user.id, is_archived = False)
   individual_groups = Group.query.filter_by(user_id = current_user.id)
-  return render_template('posts.html', posts = individual_posts, groups = individual_groups)
+  comment_data = {}
+  for post in individual_posts:
+    comment_data[post.id] = []
+    comments = Comment.query.filter_by(post_id = post.id)
+    for comment in comments:
+      comment_data[post.id].append(comment)
+  return render_template('posts.html', posts = individual_posts, groups = individual_groups, comments = comment_data)
 
 # 記事とグループの関連付け
 @main.route('/create_relation', methods=['POST'])
@@ -133,7 +157,6 @@ def create_relation():
 
     db.session.add(new_relation)
     db.session.commit()
-    flash('「' + group_name + '」に記事が追加されました。')
     return redirect(current_url)
 
 # 記事のアーカイブ
@@ -176,3 +199,14 @@ def archives():
   posts = Post.query.filter_by(user_id = login_user_id, is_archived = True)
 
   return render_template('archives.html', posts = posts)
+
+@main.route('/leave-comment', methods=['POST'])
+def leave_comment():
+  current_url = request.form.get('current_url')
+  post_id = request.form.get('post_id')
+  comment_text = request.form.get('text')
+  new_comment = Comment(post_id = post_id, text = comment_text, created_at = datetime.datetime.now())
+  db.session.add(new_comment)
+  db.session.commit()
+
+  return redirect(current_url)

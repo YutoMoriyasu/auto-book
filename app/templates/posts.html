@@ -25,10 +25,27 @@
       </form>
       <div class="expand-post mt-3">
         <button class="btn btn-primary" onclick="expandPost({{post.id}})" id="{{post.id}}post">記事を読む</button>
+        <button class="btn btn-primary" onclick="expandComment({{post.id}})" id="{{post.id}}commentExpand">メモを見る</button>
       </div>
     </div>
   </div>
   <iframe src="{{ post.url }}" frameborder="1" style="display: none;" width="100%" height="600" id="{{post.id}}"></iframe>
+  <div class="comments-container" id="{{post.id}}comment" style="display: none;">
+    {% for comment in comments[post.id] %}
+    <div class="comment-item d-flex justify-content-between align-items-center">
+      <p class="my-2">{{ comment.text }}</p>
+      <p style="font-size: 12px;" class="my-2">{{ comment.created_at.strftime('%H:%M:%S , %b %d, %Y') }}</p>
+    </div>
+    {% endfor %}
+    <form action="/leave-comment" method="POST" class="mt-2">
+      <input type="hidden" name="current_url" value="" id="currentPath">
+      <input type="hidden" name="post_id" value="{{ post.id }}">
+      <div class="d-flex align-items-center justify-content-between">
+        <textarea name="text" rows="2" style="width: calc(100% - 120px);"></textarea>
+        <button type="submit" class="btn btn-success d-block ml-auto">メモを残す</button>
+      </div>
+    </form>
+  </div>
   {% endfor %}
 </div>
 {% endblock %}
@@ -42,6 +59,15 @@
     } else {
       document.getElementById(post_id).style.display = 'none'
       document.getElementById(post_id + 'post').innerText = '記事を読む'
+    }
+  }
+  function expandComment(post_id){
+    if (document.getElementById(post_id + 'comment').style.display == 'none') {
+      document.getElementById(post_id + 'comment').style.display = 'block'
+      document.getElementById(post_id + 'commentExpand').innerText = 'メモを閉じる'
+    } else {
+      document.getElementById(post_id + 'comment').style.display = 'none'
+      document.getElementById(post_id + 'commentExpand').innerText = 'メモを見る'
     }
   }
 </script>
