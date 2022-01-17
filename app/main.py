@@ -42,6 +42,7 @@ def index():
 @main.route('/groups/<group_id>', methods=['GET'])
 @login_required
 def group(group_id):
+  groups = Group.query.filter_by(user_id = current_user.id)
   group = Group.query.filter_by(id = group_id).first()
   relations = GroupPost.query.filter_by(group_id = group_id)
   posts_in_group = []
@@ -50,7 +51,14 @@ def group(group_id):
     if post.is_archived == True:
       continue
     posts_in_group.append(post)
-  return render_template('group.html', posts = posts_in_group, group_name = group.name)
+  
+  comment_data = {}
+  for post in posts_in_group:
+    comment_data[post.id] = []
+    comments = Comment.query.filter_by(post_id = post.id)
+    for comment in comments:
+      comment_data[post.id].append(comment)
+  return render_template('group.html', posts = posts_in_group, group_name = group.name, groups = groups, comments = comment_data)
 
 # グループ作成
 @main.route('/groups/create', methods=['POST'])
