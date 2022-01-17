@@ -3,6 +3,7 @@
 {% block content %}
 <h1 class="mb-3">{{ group_name }}の記事一覧</h1>
 <div>
+  {% if posts[0] %}
   {% for post in posts %}
   <div class="d-flex align-items-center justify-content-between mb-3">
     <iframe class="hatenablogcard" style="width:calc(100% - 260px);height:155px;" src="https://hatenablog-parts.com/embed?url={{ post.url }}" width="300" height="150" frameborder="0" scrolling="no"></iframe>
@@ -48,6 +49,9 @@
     </form>
   </div>
   {% endfor %}
+  {% else %}
+  <p>まだ記事が追加されていません</p>
+  {% endif %}
 </div>
 {% endblock %}
 

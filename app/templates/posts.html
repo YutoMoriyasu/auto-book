@@ -3,6 +3,7 @@
 {% block content %}
 <h1>記事一覧</h1>
 <div class="py-4">
+  {% if posts[0] %}
   {% for post in posts %}
   <div class="d-flex align-items-center justify-content-between mb-3">
     <iframe class="hatenablogcard" style="width:calc(100% - 260px);height:155px;" src="https://hatenablog-parts.com/embed?url={{ post.url }}" width="300" height="150" frameborder="0" scrolling="no"></iframe>
@@ -48,6 +49,9 @@
     </form>
   </div>
   {% endfor %}
+  {% else %}
+  <p>記事がありません。記事を登録するか、アーカイブページを確認してください。</p>
+  {% endif %}
 </div>
 {% endblock %}
 

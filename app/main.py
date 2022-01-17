@@ -41,6 +41,8 @@ def index():
     ungrouped_post_comment_data[post.id] = []
     if relation:
       continue
+    elif post.is_archived == True:
+      continue
     else:
       for comment in ungrouped_post_comments:
         ungrouped_post_comment_data[post.id].append(comment)
