@@ -7,6 +7,7 @@
   <div class="d-flex align-items-center justify-content-between mb-3">
     <iframe class="hatenablogcard" style="width:calc(100% - 300px);height:155px;" src="https://hatenablog-parts.com/embed?url={{ post.url }}" width="300" height="150" frameborder="0" scrolling="no"></iframe>
     <div>
+      <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-text="{{post.title}}" data-url="{{post.url}}">Tweet</a>
       <form method="POST" action="/create_relation" class="posts-side-form">
         <input type="hidden" value="{{post.id}}" name="post_id">
         <select name="group_id" id="">
@@ -18,12 +19,12 @@
         <input type="hidden" name="current_path" value="" id="currentPath">
         <button type="submit">追加する</button>
       </form>
-      <form method="POST" action="/archive_post" class="posts-side-form mt-3">
+      <form method="POST" action="/archive_post" class="posts-side-form mt-1">
         <input type="hidden" name="post_id" value="{{ post.id }}">
         <input type="hidden" name="current_path" value="" id="currentPath">
         <button type="submit" class="w-100 m-0 archive-button">アーカイブする</button>
       </form>
-      <div class="expand-post mt-3">
+      <div class="expand-post mt-1">
         <button class="btn btn-primary" onclick="expandPost({{post.id}})" id="{{post.id}}post">記事を読む</button>
         <button class="btn btn-primary" onclick="expandComment({{post.id}})" id="{{post.id}}commentExpand">メモを見る</button>
       </div>
