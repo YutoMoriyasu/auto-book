@@ -84,25 +84,27 @@ h1 {
 }
 
 .posts-side-form select {
-  padding: 9px;
+  padding: 6px 9px;
   cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
 }
 
 .posts-side-form option {
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .posts-side-form button {
   color: #fff;
   background-color: #666;
-  padding: 5px 8px;
+  padding: 6px 8px 5px;
   margin-left: 10px;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .posts-side-form .archive-button {
-  background-color: #fc4067;
+  background-color: #ff1443;
   font-weight: bold;
   border: none;
 }
@@ -111,6 +113,24 @@ h1 {
   background-color: #00d1b2;
   font-weight: bold;
   border: none;
+}
+
+.toggle-button {
+  font-size: 13px;
+  font-weight: bold;
+  width: 49%;
+  background-color: rgb(54, 54, 222);
+  color: #fff;
+  padding: 6px 0 5px;
+  line-height: inherit;
+}
+
+.toggle-button:hover {
+  color: #fff;
+}
+
+button:hover {
+  opacity: .9;
 }
 
 #loading {
