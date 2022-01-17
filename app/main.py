@@ -41,12 +41,21 @@ def index():
     ungrouped_post_comment_data[post.id] = []
     if relation:
       continue
+    elif post.is_archived == True:
+      continue
     else:
       for comment in ungrouped_post_comments:
         ungrouped_post_comment_data[post.id].append(comment)
       ungrouped_posts.append(post)
 
   return render_template('index.html', groups=individual_groups, data = data, ungrouped_posts = ungrouped_posts, grouped_post_comment_data = grouped_post_comment_data, ungrouped_post_comment_data = ungrouped_post_comment_data)
+
+# グループ一覧の表示
+@main.route('/groups/all', methods=['GET'])
+@login_required
+def list_groups():
+  groups = Group.query.filter_by(user_id = current_user.id)
+  return render_template('group_list.html', groups = groups)
 
 # 個別のグループページの表示
 @main.route('/groups/<group_id>', methods=['GET'])
