@@ -174,3 +174,14 @@ def archives():
   posts = Post.query.filter_by(user_id = login_user_id, is_archived = True)
 
   return render_template('archives.html', posts = posts)
+
+@main.route('/leave-comment', methods=['POST'])
+def leave_comment():
+  current_url = request.form.get('current_url')
+  post_id = request.form.get('post_id')
+  comment_text = request.form.get('text')
+  new_comment = Comment(post_id = post_id, text = comment_text, created_at = datetime.datetime.now())
+  db.session.add(new_comment)
+  db.session.commit()
+
+  return redirect(current_url)

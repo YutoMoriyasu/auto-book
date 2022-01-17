@@ -32,3 +32,10 @@ class GroupPost(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   group_id = db.Column(UUIDType(binary=False))
   post_id = db.Column(db.Integer)
+
+class Comment(db.Model):
+  __tablename__ = 'comment'
+  id = db.Column(db.Integer, primary_key=True)
+  post_id = db.Column(db.Integer)
+  text = db.Column(db.String(1000))
+  created_at = db.Column(db.DATETIME)
