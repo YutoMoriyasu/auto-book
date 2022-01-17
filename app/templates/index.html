@@ -14,8 +14,8 @@
     <div>
       {% if data[group.id] %}
       {% for post in data[group.id] %}
-      <div class="d-md-flex align-items-start justify-content-between">
-        <iframe class="hatenablogcard" style="width:calc(100% - 300px);height:155px;max-width:100%;" src="https://hatenablog-parts.com/embed?url={{ post.url }}" width="300" height="150" frameborder="0" scrolling="no"></iframe>
+      <div class="d-md-flex align-items-center justify-content-between">
+        <iframe class="hatenablogcard" style="width:calc(100% - 260px);height:155px;max-width:100%;" src="https://hatenablog-parts.com/embed?url={{ post.url }}" width="300" height="150" frameborder="0" scrolling="no"></iframe>
         <div>
           <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-text="{{post.title}}" data-url="{{post.url}}">Tweet</a>
           <form method="POST" action="/create_relation" class="posts-side-form">
@@ -35,13 +35,13 @@
             <button type="submit" class="w-100 m-0 archive-button">アーカイブする</button>
           </form>
           <div class="expand-post mt-1">
-            <button class="btn btn-primary" onclick="expandPost({{post.id}})" id="{{post.id}}post">記事を読む</button>
-            <button class="btn btn-primary" onclick="expandComment({{post.id}})" id="{{post.id}}commentExpand">メモを見る</button>
+            <button class="btn toggle-button" onclick="expandPost({{post.id}})" id="{{post.id}}post">記事を読む</button>
+            <button class="btn toggle-button" onclick="expandComment({{post.id}})" id="{{post.id}}commentExpand">メモを見る</button>
           </div>
         </div>
       </div>
-      <iframe src="{{ post.url }}" frameborder="1" style="display: none;" width="100%" height="600" id="{{post.id}}"></iframe>
-      <div class="comments-container" id="{{post.id}}comment" style="display: none;">
+      <iframe src="{{ post.url }}" frameborder="1" style="display: none;" width="100%" height="600" id="{{post.id}}" class="mb-3"></iframe>
+      <div class="comments-container mb-3" id="{{post.id}}comment" style="display: none;">
         {% for comment in grouped_post_comment_data[post.id] %}
         <div class="comment-item d-flex justify-content-between align-items-center">
           <p class="my-2">{{ comment.text }}</p>
@@ -73,8 +73,8 @@
       <p class="m-0 text-white font-weight-bold">グループ化されていない記事</p>
     </div>
     {% for ungrouped_post in ungrouped_posts %}
-    <div class="d-md-flex align-items-start justify-content-between">
-      <iframe class="hatenablogcard" style="width:calc(100% - 300px);height:155px;max-width:100%;" src="https://hatenablog-parts.com/embed?url={{ ungrouped_post.url }}" width="300" height="150" frameborder="0" scrolling="no"></iframe>
+    <div class="d-md-flex align-items-center justify-content-between">
+      <iframe class="hatenablogcard" style="width:calc(100% - 260px);height:155px;max-width:100%;" src="https://hatenablog-parts.com/embed?url={{ ungrouped_post.url }}" width="300" height="150" frameborder="0" scrolling="no"></iframe>
       <div>
         <div>
           <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false" data-text="{{ungrouped_post.title}}" data-url="{{ungrouped_post.url}}">Tweet</a>
@@ -95,14 +95,14 @@
             <button type="submit" class="w-100 m-0 archive-button">アーカイブする</button>
           </form>
           <div class="expand-post mt-1">
-            <button class="btn btn-primary" onclick="expandPost({{ungrouped_post.id}})" id="{{ungrouped_post.id}}post">記事を読む</button>
-            <button class="btn btn-primary" onclick="expandComment({{ungrouped_post.id}})" id="{{ungrouped_post.id}}commentExpand">メモを見る</button>
+            <button class="btn toggle-button" onclick="expandPost({{ungrouped_post.id}})" id="{{ungrouped_post.id}}post">記事を読む</button>
+            <button class="btn toggle-button" onclick="expandComment({{ungrouped_post.id}})" id="{{ungrouped_post.id}}commentExpand">メモを見る</button>
           </div>
         </div>
       </div>
     </div>
-    <iframe src="{{ ungrouped_post.url }}" frameborder="1" style="display: none;" width="100%" height="600" id="{{ungrouped_post.id}}"></iframe>
-    <div class="comments-container" id="{{ungrouped_post.id}}comment" style="display: none;">
+    <iframe src="{{ ungrouped_post.url }}" frameborder="1" style="display: none;" width="100%" height="600" id="{{ungrouped_post.id}}" class="mb-3"></iframe>
+    <div class="comments-container mb-3" id="{{ungrouped_post.id}}comment" style="display: none;">
       {% for comment in ungrouped_post_comment_data[ungrouped_post.id] %}
       <div class="comment-item d-flex justify-content-between align-items-center">
         <p class="my-2">{{ comment.text }}</p>
